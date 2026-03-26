@@ -1,77 +1,166 @@
-# 💾 Backup Folder to Azure Blob Storage (AzCopy)
+# 💾 Azure Blob Backup Automation (PowerShell)
 
-## 🧠 Descripción
+![Azure](https://img.shields.io/badge/Azure-Storage-blue)
+![PowerShell](https://img.shields.io/badge/PowerShell-Automation-blue)
+![Backup](https://img.shields.io/badge/Backup-Disaster%20Recovery-green)
 
-Este proyecto automatiza el backup de carpetas locales hacia Azure Blob Storage utilizando AzCopy, una herramienta optimizada para transferencias de datos a gran escala.
-
-El script está diseñado para simular escenarios reales de backup en entornos cloud, incorporando validaciones, logging y ejecución controlada.
-
----
-
-## ☁️ Caso de uso
-
-Permite realizar copias de seguridad rápidas y eficientes desde sistemas locales hacia almacenamiento en Azure, útil en escenarios como:
-
-* Backups de servidores on-premise
-* Migración de datos a cloud
-* Sincronización de archivos
+> 💡 Automate Azure Blob Storage backups to improve data protection and disaster recovery readiness
 
 ---
 
-## ⚙️ Características técnicas
+## 🧠 Overview
 
-* Uso de AzCopy (alto rendimiento)
-* Soporte para autenticación mediante SAS Token
-* Script parametrizado
-* Validación de rutas y dependencias
-* Logging detallado en fichero
-* Modo simulación (**DryRun**)
+This project automates the backup of Azure Blob Storage containers, enabling reliable data protection and supporting disaster recovery strategies.
+
+It simulates real-world cloud operations where backups are essential to ensure data durability and business continuity.
+
+**Technologies used:**
+
+* Azure PowerShell (Az Module)
+* Azure Storage Accounts
+* PowerShell scripting
 
 ---
 
-## ▶️ Uso
+## 🚨 Problem Statement
+
+In cloud environments, data stored in Azure Blob Storage is critical for applications and business operations.
+
+Without proper backup strategies:
+
+* Data loss can occur due to accidental deletion or corruption
+* There is no easy recovery mechanism
+* Disaster recovery processes become unreliable
+
+Manual backup processes are error-prone and not scalable.
+
+---
+
+## 🎯 Why This Matters
+
+Backups are a fundamental pillar of cloud architecture.
+
+Automating backups:
+
+* Ensures **data protection and recovery readiness**
+* Reduces human error
+* Supports **disaster recovery (DR)** strategies
+* Improves operational reliability
+
+---
+
+## 🏗️ Solution
+
+This project provides a PowerShell-based solution that:
+
+* Connects to Azure
+* Retrieves Blob Storage containers
+* Creates backups of data
+* Stores backup copies in a target storage account
+* Supports repeatable and automated execution
+
+---
+
+## 🔄 Execution Flow
+
+```
+[Azure Storage Account]
+        ↓
+[Script Execution]
+        ↓
+[Select Containers]
+        ↓
+[Copy Data (Backup)]
+        ↓
+[Store in Backup Account]
+        ↓
+[Logs / Output]
+```
+
+---
+
+## ⚙️ Technical Highlights
+
+* Automated backup process using PowerShell
+* Reusable and parameterized script
+* Integration with Azure Storage
+* Designed for scalability and automation
+* Can be extended for scheduled execution
+
+---
+
+## 🧩 How It Works
+
+The script performs:
+
+1. Authentication against Azure
+2. Discovery of storage accounts and containers
+3. Data copy process (backup creation)
+4. Storage of backups in destination container
+5. Execution logging
+
+---
+
+## 🔐 Security Considerations
+
+* Requires appropriate Azure RBAC permissions
+* Can be integrated with Managed Identity (future improvement)
+* Sensitive data (credentials) should be handled securely
+* Recommended to restrict access to backup storage accounts
+
+---
+
+## 🌍 Real-World Use Case
+
+This solution can be used by cloud teams to:
+
+* Implement backup strategies for Blob Storage
+* Support disaster recovery plans
+* Automate periodic backups (e.g., daily jobs)
+* Integrate into Azure Automation or CI/CD pipelines
+
+---
+
+## ▶️ Usage
 
 ```powershell
-# Simulación
-.\backup.ps1 `
-  -SourceFolder "C:\Backup" `
-  -ContainerUrl "https://<storage>.blob.core.windows.net/backups?<SAS>" `
-  -DryRun
+Connect-AzAccount
 
-# Ejecución real
-.\backup.ps1 `
-  -SourceFolder "C:\Backup" `
-  -ContainerUrl "https://<storage>.blob.core.windows.net/backups?<SAS>"
+# Run backup script
+.\backup-blob.ps1 -SourceRG "RG-App" -DestinationRG "RG-Backup"
 ```
 
 ---
 
-## 📊 Output
+## 📊 Example Output
 
 ```
-📁 Origen: C:\Backup
-☁️ Destino: Azure Blob
+📦 Container detected: app-data
+🔄 Backup in progress...
+✅ Backup completed successfully
 
-🚀 Iniciando backup...
-✅ Backup completado correctamente
+🎯 Process finished
 ```
-
-Se genera un fichero `backup.log` con el detalle completo de la ejecución.
 
 ---
 
-## ⚠️ Consideraciones
+## 🚀 Future Improvements
 
-* Requiere AzCopy instalado
-* El SAS Token debe tener permisos de escritura
-* Revisar caducidad del SAS
-* Ejecutar en modo DryRun antes de producción
+* Integration with Azure Automation (Runbooks)
+* Scheduled backups (cron / automation)
+* Incremental backups instead of full copies
+* Integration with Azure Backup / Recovery Services Vault
+* Monitoring with Azure Monitor / alerts
 
 ---
 
-## 🚀 Mejoras futuras
+## 📌 Key Takeaways
 
-* Integración con Azure Key Vault para gestión de secretos
-* Automatización mediante Task Scheduler / Azure Automation
-* Soporte incremental
-* Notificaciones (email / webhook)
+This project demonstrates:
+
+* Implementation of backup strategies in Azure
+* Understanding of **disaster recovery concepts**
+* Automation of cloud operations
+* Real-world cloud engineering practices
+
+---
