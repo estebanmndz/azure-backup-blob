@@ -1,133 +1,130 @@
-# 💾 Azure Blob Backup Automation (PowerShell)
+# 💾 Azure Blob Backup Automation (AzCopy + PowerShell)
 
 ![Azure](https://img.shields.io/badge/Azure-Storage-blue)
 ![PowerShell](https://img.shields.io/badge/PowerShell-Automation-blue)
-![Backup](https://img.shields.io/badge/Backup-Disaster%20Recovery-green)
+![AzCopy](https://img.shields.io/badge/AzCopy-Data%20Transfer-green)
 
-> 💡 Automate Azure Blob Storage backups to improve data protection and disaster recovery readiness
+> 💡 Automate local-to-cloud backups by uploading data to Azure Blob Storage using AzCopy
 
 ---
 
 ## 🧠 Overview
 
-This project automates the backup of Azure Blob Storage containers, enabling reliable data protection and supporting disaster recovery strategies.
+This project automates the backup of local data to Azure Blob Storage using **AzCopy**, a high-performance data transfer tool.
 
-It simulates real-world cloud operations where backups are essential to ensure data durability and business continuity.
+It is designed to simulate real-world scenarios such as:
 
-**Technologies used:**
-
-* Azure PowerShell (Az Module)
-* Azure Storage Accounts
-* PowerShell scripting
+* On-premise to cloud backups
+* Data migration to Azure
+* Automated data uploads for cloud workloads
 
 ---
 
 ## 🚨 Problem Statement
 
-In cloud environments, data stored in Azure Blob Storage is critical for applications and business operations.
+Organizations often need to move or back up local data to the cloud.
 
-Without proper backup strategies:
+Without automation:
 
-* Data loss can occur due to accidental deletion or corruption
-* There is no easy recovery mechanism
-* Disaster recovery processes become unreliable
-
-Manual backup processes are error-prone and not scalable.
+* Backups are manual and error-prone
+* Data transfer is inconsistent
+* There is no logging or traceability
 
 ---
 
 ## 🎯 Why This Matters
 
-Backups are a fundamental pillar of cloud architecture.
+Reliable data transfer to cloud storage is critical for:
 
-Automating backups:
+* Backup strategies
+* Data migration projects
+* Hybrid cloud environments
 
-* Ensures **data protection and recovery readiness**
-* Reduces human error
-* Supports **disaster recovery (DR)** strategies
-* Improves operational reliability
+Automating this process improves consistency, reliability, and operational efficiency.
 
 ---
 
 ## 🏗️ Solution
 
-This project provides a PowerShell-based solution that:
+This project provides a PowerShell script that:
 
-* Connects to Azure
-* Retrieves Blob Storage containers
-* Creates backups of data
-* Stores backup copies in a target storage account
-* Supports repeatable and automated execution
+* Takes a local folder as source
+* Uploads data to Azure Blob Storage using **AzCopy**
+* Supports a safe execution mode (**DryRun**)
+* Logs all operations for auditing
 
 ---
 
 ## 🔄 Execution Flow
 
 ```
-[Azure Storage Account]
+[Local Folder]
         ↓
 [Script Execution]
         ↓
-[Select Containers]
+[AzCopy Command]
         ↓
-[Copy Data (Backup)]
+[Upload to Blob Container]
         ↓
-[Store in Backup Account]
-        ↓
-[Logs / Output]
+[Logs Generated]
 ```
 
 ---
 
 ## ⚙️ Technical Highlights
 
-* Automated backup process using PowerShell
-* Reusable and parameterized script
-* Integration with Azure Storage
-* Designed for scalability and automation
-* Can be extended for scheduled execution
+* Integration with **AzCopy** for high-performance transfers
+* Parameterized script for flexibility
+* DryRun mode for safe testing
+* Logging (`backup.log`)
+* Error handling with `try/catch`
 
 ---
 
 ## 🧩 How It Works
 
-The script performs:
-
-1. Authentication against Azure
-2. Discovery of storage accounts and containers
-3. Data copy process (backup creation)
-4. Storage of backups in destination container
-5. Execution logging
+1. Validates local source folder
+2. Validates AzCopy installation
+3. Builds AzCopy command
+4. Executes upload (or simulates with DryRun)
+5. Logs all operations
 
 ---
 
 ## 🔐 Security Considerations
 
-* Requires appropriate Azure RBAC permissions
-* Can be integrated with Managed Identity (future improvement)
-* Sensitive data (credentials) should be handled securely
-* Recommended to restrict access to backup storage accounts
+* Requires secure handling of **Container URL (SAS token)**
+* Avoid exposing credentials in scripts
+* Recommended to use short-lived SAS tokens
 
 ---
 
 ## 🌍 Real-World Use Case
 
-This solution can be used by cloud teams to:
+This script can be used to:
 
-* Implement backup strategies for Blob Storage
-* Support disaster recovery plans
-* Automate periodic backups (e.g., daily jobs)
-* Integrate into Azure Automation or CI/CD pipelines
+* Upload application data to Azure
+* Perform backups from local servers
+* Migrate datasets to cloud storage
+* Integrate into scheduled tasks or automation workflows
 
 ---
 
 ## ▶️ Usage
 
 ```powershell
-Connect-AzAccount
+.\backup-blob.ps1 `
+    -SourceFolder "C:\data" `
+    -ContainerUrl "https://account.blob.core.windows.net/container?<SAS>"
+```
 
-# Run backup script
-.\backup-blob.ps1 -SourceRG "RG-App" -DestinationRG "RG-Backup"
+### Dry Run
+
+```powershell
+.\backup-blob.ps1 `
+    -SourceFolder "C:\data" `
+    -ContainerUrl "https://account.blob.core.windows.net/container?<SAS>" `
+    -DryRun
 ```
 
 ---
@@ -135,22 +132,22 @@ Connect-AzAccount
 ## 📊 Example Output
 
 ```
-📦 Container detected: app-data
-🔄 Backup in progress...
-✅ Backup completed successfully
+📁 Origen: C:\data
+☁️ Destino: Azure Blob
 
-🎯 Process finished
+🚀 Iniciando backup...
+✅ Backup completado correctamente
 ```
 
 ---
 
 ## 🚀 Future Improvements
 
-* Integration with Azure Automation (Runbooks)
-* Scheduled backups (cron / automation)
-* Incremental backups instead of full copies
-* Integration with Azure Backup / Recovery Services Vault
-* Monitoring with Azure Monitor / alerts
+* Scheduled execution (Task Scheduler / Automation)
+* Incremental uploads
+* Integration with Azure Automation
+* Use of Managed Identity instead of SAS tokens
+* Monitoring and alerts
 
 ---
 
@@ -158,9 +155,9 @@ Connect-AzAccount
 
 This project demonstrates:
 
-* Implementation of backup strategies in Azure
-* Understanding of **disaster recovery concepts**
-* Automation of cloud operations
-* Real-world cloud engineering practices
+* Data transfer automation to Azure
+* Use of AzCopy in real-world scenarios
+* Safe scripting practices (validation, logging, DryRun)
+* Hybrid cloud operational mindset
 
 ---
